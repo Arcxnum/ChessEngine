@@ -21,7 +21,6 @@ public class GamePanel extends JPanel implements Runnable {
 	@Override
 	public void run() {
 		
-<<<<<<< HEAD
 		// GAME LOOP
 		double drawInterval = 1000000000/FPS;
 		double delta = 0;
@@ -40,9 +39,7 @@ public class GamePanel extends JPanel implements Runnable {
 				delta--;
 			}
 		}
-		
-=======
->>>>>>> ffe4a8473a3c41b6c7bce0c195c156b15bceaa5b
+
 	}
 	
 	private void update() {
