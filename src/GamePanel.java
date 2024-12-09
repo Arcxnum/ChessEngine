@@ -8,23 +8,20 @@ public class GamePanel extends JPanel implements Runnable {
 	final int FPS = 60;
 	Thread gameThread;
 	
-	public GamePanel () {
-		
+	public GamePanel () {	
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		setBackground(Color.black);
-		
+		setBackground(Color.black);	
 	}
 	
 	public void launchGame() {
-		
 		gameThread = new Thread(this);
-		gameThread.start();
-		
+		gameThread.start();	
 	}
 	
 	@Override
 	public void run() {
 		
+<<<<<<< HEAD
 		// GAME LOOP
 		double drawInterval = 1000000000/FPS;
 		double delta = 0;
@@ -44,18 +41,16 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 		}
 		
+=======
+>>>>>>> ffe4a8473a3c41b6c7bce0c195c156b15bceaa5b
 	}
 	
 	private void update() {
 		
-		
-		
 	}
 	
 	public void paintComponent(Graphics g) {
-		
 		super.paintComponent(g);
-		
 	}
 	
 }
