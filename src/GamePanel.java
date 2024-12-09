@@ -8,37 +8,27 @@ public class GamePanel extends JPanel implements Runnable {
 	final int FPS = 60;
 	Thread gameThread;
 	
-	public GamePanel () {
-		
+	public GamePanel () {	
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		setBackground(Color.black);
-		
+		setBackground(Color.black);	
 	}
 	
 	public void launchGame() {
-		
 		gameThread = new Thread(this);
-		gameThread.start();
-		
+		gameThread.start();	
 	}
 	
 	@Override
 	public void run() {
 		
-		
-		
 	}
 	
 	private void update() {
 		
-		
-		
 	}
 	
 	public void paintComponent(Graphics g) {
-		
 		super.paintComponent(g);
-		
 	}
 	
 }
