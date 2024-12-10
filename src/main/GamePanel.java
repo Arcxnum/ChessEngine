@@ -3,9 +3,8 @@ package main;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.util.ArrayList;
+import piece.Piece;
 import piece.*;
-import main.Mouse;
-
 public class GamePanel extends JPanel implements Runnable {
 
 	public static final int WIDTH = 1100;
@@ -13,7 +12,7 @@ public class GamePanel extends JPanel implements Runnable {
 	final int FPS = 60;
 	Thread gameThread;
 	Board board = new Board();
-	Mouse mouse = new Mouse();
+	
 	
 	// Pieces
 	public static ArrayList<Piece> pieces = new ArrayList<Piece>();
@@ -29,8 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setBackground(Color.black);
-		addMouseMotionListener(mouse);
-		addMouseListener(mouse);
+		
 		
 		setPieces();
 		copyPieces(pieces, simPieces);
@@ -121,37 +119,31 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	private void update() {
 		// Mouse button pressed
-		if (mouse.pressed) {
+		
 			if (activeP == null) {
 				// If the activeP is null, check if you can pick up a piece
 				for (Piece piece : simPieces) {
 					// If the mouse is on your color's piece, pick it up as the activeP
-					if (piece.color == currentColor && piece.col == mouse.x/Board.SQUARE_SIZE && piece.row == mouse.y/Board.SQUARE_SIZE) {
 						activeP = piece;
 					}
 				}
 			}
-		} else if (activeP != null) {
+		
 			// If the player is holding a piece, simulate the move
-			simulate();
-		}
+			
+		
 	 
 		// Mouse button released
-		else if (mouse.pressed == false) {
-			if (activeP != null) {
-				activeP.updatePosition();
-				activeP = null;
-			}
-		}
+			
+		
 	
-	}
+	
 	
 	
 	
 	private void simulate() {
 		// If a piece is being held, update its position
-		activeP.x = mouse.x - Board.HALF_SQUARE_SIZE;
-		activeP.y = mouse.y - Board.HALF_SQUARE_SIZE;
+		
 		activeP.col = activeP.getCol(activeP.x);
 		activeP.row = activeP.getRow(activeP.y);
 	}
