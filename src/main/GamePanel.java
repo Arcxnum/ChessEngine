@@ -150,6 +150,7 @@ public class GamePanel extends JPanel implements Runnable {
 					// Update the piece list in case a piece has been captured and removed during simulation
 					copyPieces(simPieces, pieces);
 					activeP.updatePosition();
+					activeP = null;
 				}
 				
 				else {
