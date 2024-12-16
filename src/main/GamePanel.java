@@ -150,7 +150,7 @@ public class GamePanel extends JPanel implements Runnable {
 					// Update the piece list in case a piece has been captured and removed during simulation
 					copyPieces(simPieces, pieces);
 					activeP.updatePosition();
-					activeP = null;
+					changePlayer();
 				}
 				
 				else {
@@ -191,6 +191,15 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 	
+	private void changePlayer() {
+		if (currentColor == WHITE) {
+			currentColor = BLACK;
+		} else {
+			currentColor = WHITE;
+		}
+		activeP = null;
+	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
@@ -214,6 +223,17 @@ public class GamePanel extends JPanel implements Runnable {
 			
 			// Draw the piece in the end so it won't be hidden by the board or colored square
 			activeP.draw(g2);
+		}
+		
+		// Status messages
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2.setFont(new Font("Times New Roman", Font.PLAIN, 40));
+		g2.setColor(Color.white);
+		
+		if (currentColor == WHITE) {
+			g2.drawString("White's turn", 840, 550);
+		} else {
+			g2.drawString("Black's turn", 840, 550);
 		}
 	}
 	
