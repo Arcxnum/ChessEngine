@@ -66,7 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
 		pieces.add(new Bishop(WHITE, 5, 4));
 		
 		pieces.add(new King(WHITE, 4, 4));
-		pieces.add(new Queen(WHITE, 3, 7));
+		pieces.add(new Queen(WHITE, 3, 4));
 		
 		// Black pieces
 		pieces.add(new Pawn(BLACK, 0, 1));
