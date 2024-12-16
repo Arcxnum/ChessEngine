@@ -20,6 +20,7 @@ public class GamePanel extends JPanel implements Runnable {
 	ArrayList<Piece> promoPieces = new ArrayList<Piece>();
 	Piece activeP;
 	public static Piece castlingP;
+	Piece checkingP;
 	
 	// Color
 	public static final int WHITE = 0;
@@ -30,6 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
 	boolean canMove;
 	boolean validSquare;
 	boolean promotion;
+	boolean gameOver;
 	
 	public GamePanel () {	
 		
@@ -160,11 +162,23 @@ public class GamePanel extends JPanel implements Runnable {
 							castlingP.updatePosition();
 						}
 						
+						if (isKingInCheck()) {
+							// TODO: game over
+							
+						} /*else {
+							if (canPromote()) {
+								promotion = true;
+							} else {
+								changePlayer();
+							}
+						}*/
+						
 						if (canPromote()) {
 							promotion = true;
 						} else {
 							changePlayer();
 						}
+						
 					}
 					
 					else {
@@ -225,6 +239,35 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 		}
 		return false;
+	}
+	
+	private boolean isKingInCheck() {
+		Piece king = getKing(true);
+		
+		if (activeP.canMove(king.col,  king.row)) {
+			checkingP = activeP;
+			return true;
+		} else {
+			checkingP = null;
+		}
+		
+		return false;
+	}
+	
+	private Piece getKing(boolean opponent) {
+		Piece king = null;
+		for (Piece piece : simPieces) {
+			if (opponent) {
+				if (piece.type == Type.KING && piece.color != currentColor) {
+					king = piece;
+				}
+			} else {
+				if (piece.type == Type.KING && piece.color == currentColor) {
+					king = piece;
+				}
+			}
+		}
+		return king;
 	}
 	
 	private void checkCastling() {
@@ -338,8 +381,16 @@ public class GamePanel extends JPanel implements Runnable {
 		} else {
 			if (currentColor == WHITE) {
 				g2.drawString("White's turn", 780, 550);
+				if (checkingP != null && checkingP.color == BLACK) {
+					g2.setColor(Color.red);
+					g2.drawString("Check", 780, 600);
+				}
 			} else {
 				g2.drawString("Black's turn", 780, 550);
+				if (checkingP != null && checkingP.color == WHITE) {
+					g2.setColor(Color.red);
+					g2.drawString("Check", 780, 600);
+				}
 			}
 		}
 		
