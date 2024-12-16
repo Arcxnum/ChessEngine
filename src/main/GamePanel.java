@@ -210,8 +210,21 @@ public class GamePanel extends JPanel implements Runnable {
 			
 			checkCastling();
 			
-			validSquare = true;
+			if (!isIllegal(activeP)) {
+				validSquare = true;
+			}
 		}
+	}
+	
+	private boolean isIllegal(Piece king) {
+		if (king.type == Type.KING) {
+			for (Piece piece : simPieces) {
+				if (piece != king && piece.color != king.color && piece.canMove(king.col,  king.row)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	private void checkCastling() {
@@ -294,10 +307,18 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		if (activeP != null) {
 			if (canMove) {
-				g2.setColor(Color.WHITE);
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
-				g2.fillRect(activeP.col*Board.SQUARE_SIZE, activeP.row*Board.SQUARE_SIZE, Board.SQUARE_SIZE, Board.SQUARE_SIZE);
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+				if (isIllegal(activeP)) {
+					g2.setColor(Color.RED);
+					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+					g2.fillRect(activeP.col*Board.SQUARE_SIZE, activeP.row*Board.SQUARE_SIZE, Board.SQUARE_SIZE, Board.SQUARE_SIZE);
+					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+				} else {
+					g2.setColor(Color.WHITE);
+					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+					g2.fillRect(activeP.col*Board.SQUARE_SIZE, activeP.row*Board.SQUARE_SIZE, Board.SQUARE_SIZE, Board.SQUARE_SIZE);
+					g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+				}
+				
 			}
 			
 			// Draw the piece in the end so it won't be hidden by the board or colored square
