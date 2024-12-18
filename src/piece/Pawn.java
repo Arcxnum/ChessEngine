@@ -48,7 +48,7 @@ public class Pawn extends Piece {
 			// En Passant (forced move)
 			if (Math.abs(targetCol - preCol) == 1 && targetRow == preRow + moveValue) {
 				for (Piece piece : GamePanel.simPieces) {
-					if (piece.col == targetCol && piece.row == preRow && piece.twoStepped == true) {
+					if (piece.col == targetCol && piece.row == preRow && piece.twoStepped) {
 						hittingP = piece;
 						return true;
 					}

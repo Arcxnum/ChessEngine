@@ -53,45 +53,45 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	public void setPieces() {
 		// White pieces
-		/*pieces.add(new Pawn(WHITE, 0, 6));
+		pieces.add(new Pawn(WHITE, 0, 6));
 		pieces.add(new Pawn(WHITE, 1, 6));
 		pieces.add(new Pawn(WHITE, 2, 6));
 		pieces.add(new Pawn(WHITE, 3, 6));
 		pieces.add(new Pawn(WHITE, 4, 6));
 		pieces.add(new Pawn(WHITE, 5, 6));
 		pieces.add(new Pawn(WHITE, 6, 6));
-		pieces.add(new Pawn(WHITE, 7, 6));*/
+		pieces.add(new Pawn(WHITE, 7, 6));
 		
-		/*pieces.add(new Knight(WHITE, 1, 7));
-		pieces.add(new Knight(WHITE, 6, 7));*/
+		pieces.add(new Knight(WHITE, 1, 7));
+		pieces.add(new Knight(WHITE, 6, 7));
 		
-		/*pieces.add(new Rook(WHITE, 0, 7));
-		pieces.add(new Rook(WHITE, 7, 7));*/
+		pieces.add(new Rook(WHITE, 0, 7));
+		pieces.add(new Rook(WHITE, 7, 7));
 		
-		/*pieces.add(new Bishop(WHITE, 2, 7));
-		pieces.add(new Bishop(WHITE, 5, 7));*/
+		pieces.add(new Bishop(WHITE, 2, 7));
+		pieces.add(new Bishop(WHITE, 5, 7));
 		
 		pieces.add(new King(WHITE, 4, 7));
-		/*pieces.add(new Queen(WHITE, 3, 7));*/
+		pieces.add(new Queen(WHITE, 3, 7));
 		
 		// Black pieces
-		/*pieces.add(new Pawn(BLACK, 0, 1));
+		pieces.add(new Pawn(BLACK, 0, 1));
 		pieces.add(new Pawn(BLACK, 1, 1));
 		pieces.add(new Pawn(BLACK, 2, 1));
 		pieces.add(new Pawn(BLACK, 3, 1));
 		pieces.add(new Pawn(BLACK, 4, 1));
 		pieces.add(new Pawn(BLACK, 5, 1));
-		pieces.add(new Pawn(BLACK, 6, 1));*/
+		pieces.add(new Pawn(BLACK, 6, 1));
 		pieces.add(new Pawn(BLACK, 7, 1));
 		
-		/*pieces.add(new Knight(BLACK, 1, 0));
+		pieces.add(new Knight(BLACK, 1, 0));
 		pieces.add(new Knight(BLACK, 6, 0));
 		
 		pieces.add(new Rook(BLACK, 0, 0));
 		pieces.add(new Rook(BLACK, 7, 0));
 		
 		pieces.add(new Bishop(BLACK, 2, 0));
-		pieces.add(new Bishop(BLACK, 5, 0));*/
+		pieces.add(new Bishop(BLACK, 5, 0));
 		
 		pieces.add(new King(BLACK, 4, 0));
 		pieces.add(new Queen(BLACK, 3, 0));
@@ -480,7 +480,9 @@ public class GamePanel extends JPanel implements Runnable {
 			currentColor = BLACK;
 			// Reset black's two stepped status for en passant
 			for (Piece piece : pieces) {
-				piece.twoStepped = false;
+				if (piece.color == BLACK) {
+					piece.twoStepped = false;
+				}
 			}
 		} else {
 			currentColor = WHITE;
@@ -586,7 +588,7 @@ public class GamePanel extends JPanel implements Runnable {
 				kingInCheck.draw(g2);
 			} else {
 				g2.drawString("Black to play", 780, 550);
-				Piece kingInCheck = getKing(true);
+				Piece kingInCheck = getKing(false);
 				if (checkingP != null && checkingP.color == WHITE) {
 					g2.setColor(Color.red);
 					g2.drawString("Check", 780, 600);
