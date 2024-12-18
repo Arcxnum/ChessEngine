@@ -32,6 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
 	boolean validSquare;
 	boolean promotion;
 	boolean gameOver;
+	boolean stalemate;
 	
 	public GamePanel () {	
 		
@@ -52,45 +53,45 @@ public class GamePanel extends JPanel implements Runnable {
 	
 	public void setPieces() {
 		// White pieces
-		pieces.add(new Pawn(WHITE, 0, 6));
+		/*pieces.add(new Pawn(WHITE, 0, 6));
 		pieces.add(new Pawn(WHITE, 1, 6));
 		pieces.add(new Pawn(WHITE, 2, 6));
 		pieces.add(new Pawn(WHITE, 3, 6));
 		pieces.add(new Pawn(WHITE, 4, 6));
 		pieces.add(new Pawn(WHITE, 5, 6));
 		pieces.add(new Pawn(WHITE, 6, 6));
-		pieces.add(new Pawn(WHITE, 7, 6));
+		pieces.add(new Pawn(WHITE, 7, 6));*/
 		
-		pieces.add(new Knight(WHITE, 1, 7));
-		pieces.add(new Knight(WHITE, 6, 7));
+		/*pieces.add(new Knight(WHITE, 1, 7));
+		pieces.add(new Knight(WHITE, 6, 7));*/
 		
-		pieces.add(new Rook(WHITE, 0, 7));
-		pieces.add(new Rook(WHITE, 7, 7));
+		/*pieces.add(new Rook(WHITE, 0, 7));
+		pieces.add(new Rook(WHITE, 7, 7));*/
 		
-		pieces.add(new Bishop(WHITE, 2, 7));
-		pieces.add(new Bishop(WHITE, 5, 7));
+		/*pieces.add(new Bishop(WHITE, 2, 7));
+		pieces.add(new Bishop(WHITE, 5, 7));*/
 		
 		pieces.add(new King(WHITE, 4, 7));
-		pieces.add(new Queen(WHITE, 3, 7));
+		/*pieces.add(new Queen(WHITE, 3, 7));*/
 		
 		// Black pieces
-		pieces.add(new Pawn(BLACK, 0, 1));
+		/*pieces.add(new Pawn(BLACK, 0, 1));
 		pieces.add(new Pawn(BLACK, 1, 1));
 		pieces.add(new Pawn(BLACK, 2, 1));
 		pieces.add(new Pawn(BLACK, 3, 1));
 		pieces.add(new Pawn(BLACK, 4, 1));
 		pieces.add(new Pawn(BLACK, 5, 1));
-		pieces.add(new Pawn(BLACK, 6, 1));
+		pieces.add(new Pawn(BLACK, 6, 1));*/
 		pieces.add(new Pawn(BLACK, 7, 1));
 		
-		pieces.add(new Knight(BLACK, 1, 0));
+		/*pieces.add(new Knight(BLACK, 1, 0));
 		pieces.add(new Knight(BLACK, 6, 0));
 		
 		pieces.add(new Rook(BLACK, 0, 0));
 		pieces.add(new Rook(BLACK, 7, 0));
 		
 		pieces.add(new Bishop(BLACK, 2, 0));
-		pieces.add(new Bishop(BLACK, 5, 0));
+		pieces.add(new Bishop(BLACK, 5, 0));*/
 		
 		pieces.add(new King(BLACK, 4, 0));
 		pieces.add(new Queen(BLACK, 3, 0));
@@ -130,7 +131,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private void update() {
 		if (promotion) {
 			promoting();
-		} else if (gameOver == false) {
+		} else if (!gameOver && !stalemate) {
 			// MOUSE BUTTON PRESSED //
 			if (mouse.pressed) {
 				if (activeP == null) {
@@ -164,7 +165,8 @@ public class GamePanel extends JPanel implements Runnable {
 						
 						if (isKingInCheck() && isCheckmate()) {
 							gameOver = true;
-							
+						} else if (isStalemate() && !isKingInCheck()) {
+							stalemate = true;
 						} else { // The game continues
 							if (canPromote()) {
 								promotion = true;
@@ -426,6 +428,42 @@ public class GamePanel extends JPanel implements Runnable {
 		return isValidMove;
 	}
 	
+	private boolean isStalemate() {
+		int count = 0;
+		int pawnCount = 0;
+		// Count the number of pieces
+		for (Piece piece : simPieces) {
+			if (piece.color != currentColor) {
+				count++;
+			}
+			
+			if (piece.type == Type.PAWN) {
+				pawnCount++;
+			}
+		}
+		
+		if (count == 1) {
+	        if (!kingCanMove(getKing(true))) {
+	            return true;
+	        }
+	    } else if (count != 1 && pawnCount != 0) {
+	        for (Piece piece : simPieces) {
+	            if (piece.type == Type.PAWN) {
+	                int direction = piece.color == WHITE ? 1 : -1;
+	                int nextRow = piece.row + direction;
+	                if (nextRow >= 0 && nextRow <= 7) {
+	                    for (Piece otherPiece : simPieces) {
+	                        if (otherPiece.col == piece.col && otherPiece.row == nextRow && otherPiece.color != piece.color) {
+	                            return true; // Pawn is blocked
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+		return false;
+	}
+	
 	private void checkCastling() {
 		if (castlingP != null) {
 			if (castlingP.col == 0) {
@@ -571,6 +609,12 @@ public class GamePanel extends JPanel implements Runnable {
 			g2.setFont(new Font("Georgia", Font.PLAIN, 35));
 			g2.setColor(Color.GREEN);
 			g2.drawString(checkmateText, 720, 480);
+		}
+		
+		if (stalemate) {
+			g2.setFont(new Font("Georgia", Font.PLAIN, 35));
+			g2.setColor(Color.GRAY);
+			g2.drawString("Draw by stalemate", 720, 480);
 		}
 	}
 }
